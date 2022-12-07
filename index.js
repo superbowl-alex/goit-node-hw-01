@@ -18,7 +18,7 @@ async function invokeAction({ action, id, name, email, phone }) {
     case "list":
       try {
         const contacts = await contactsOperations.listContacts();
-        console.log(contacts);
+        console.table(contacts);
       } catch (error) {
         console.log(error);
       } finally {
@@ -26,26 +26,44 @@ async function invokeAction({ action, id, name, email, phone }) {
       }
 
     case "get":
-      const contact = await contactsOperations.getContactById(id);
-      if (!contact) {
-        throw new Error(`Contact with id=${id} not found`);
+      try {
+        const contact = await contactsOperations.getContactById(id);
+        if (!contact) {
+          throw new Error(`Contact with id=${id} not found`);
+        }
+        console.table(contact);
+      } catch (error) {
+        console.log(error.message);
+      } finally {
+        break;
       }
-      console.log(contact);
-      break;
 
     case "add":
-      const newContact = await contactsOperations.addContact(
-        name,
-        email,
-        phone
-      );
-      console.log(newContact);
-      break;
+      try {
+        const newContact = await contactsOperations.addContact(
+          name,
+          email,
+          phone
+        );
+        console.table(newContact);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        break;
+      }
 
     case "remove":
-      const removeContact = await contactsOperations.removeContact(id);
-      console.log(removeContact);
-      break;
+      try {
+        const removeContact = await contactsOperations.removeContact(id);
+        if (!removeContact) {
+          throw new Error(`Contact with id=${id} not found`);
+        }
+        console.table(removeContact);
+      } catch (error) {
+        console.log(error.message);
+      } finally {
+        break;
+      }
 
     default:
       console.warn("\x1B[31m Unknown action type!");
