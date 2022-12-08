@@ -23,7 +23,7 @@ async function addContact(name, email, phone) {
   const contacts = await listContacts();
   const newContact = { id: v4(), name, email, phone };
   contacts.push(newContact);
-  await fs.writeFile(contactsPath, JSON.stringify(contacts));
+  await fs.writeFile(contactsPath, JSON.stringify(contacts, null, 2));
   return newContact;
 }
 
@@ -34,7 +34,7 @@ async function removeContact(contactId) {
     return null;
   }
   const newContacts = contacts.filter((_, index) => index !== idx);
-  await fs.writeFile(contactsPath, JSON.stringify(newContacts));
+  await fs.writeFile(contactsPath, JSON.stringify(newContacts, null, 2));
   return contacts[idx];
 }
 
